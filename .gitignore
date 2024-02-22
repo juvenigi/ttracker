@@ -1,0 +1,27 @@
+# Compiled files
+*.exe
+*.test
+*.prof
+*.out
+*.app
+
+# Dependency directories
+/bin/
+/pkg/
+/vendor/
+/build/
+
+# Testing
+/.cache/
+/.idea/
+
+# Go specific files
+*.log
+*.test
+.idea/
+.vscode/
+.vscode-test/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
