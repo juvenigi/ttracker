@@ -24,11 +24,11 @@ jobs:
 
     - name: Build
       run: go build -o ttrackerclient ./timetracker/src/client/client.go
-      working-directory: <root>/timetracker/src/client
+      working-directory: ./timetracker/src/client
 
     - name: Build Daemon
       run: go build -o ttrackerd ./timetracker/src/daemon/daemon.go
-      working-directory: <root>/timetracker/src/daemon
+      working-directory: ./timetracker/src/daemon
 
     - name: Test
       run: go test -v ./...
@@ -62,5 +62,5 @@ jobs:
     - name: Create Release
       run: |
         version=$(git describe --tags --abbrev=0)
-        gh release create "$version" <root>/bin/ttrackerclient -t "Release $version" -n "ttrackerclient $version"
-        gh release upload "$version" <root>/bin/ttrackerd -n "ttrackerd $version"
+        gh release create "$version" ./bin/ttrackerclient -t "Release $version" -n "ttrackerclient $version"
+        gh release upload "$version" ./bin/ttrackerd -n "ttrackerd $version"
