@@ -55,23 +55,18 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }} 
     
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+    steps:    
+    - uses: actions/checkout@v3
+    - name: Checkout and set RELEASE_VERSION envvar
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
     - name: Download artifacts
       uses: actions/download-artifact@v2
       with:
         name: binaries
 
-    - name: Debug why binary artifacts are not found
-      run: ls -l
-    
-    - uses: actions/checkout@v2
-    - name: Set RELEASE_VERSION envvar
-      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-        
     - name: Create Release
       run: |
+        ls -l
         gh release create "$RELEASE_VERSION" ./ttrackerclient.exe -t "Release $RELEASE_VERSION" -n "ttrackerclient $RELEASE_VERSION"
         gh release upload "$RELEASE_VERSION" ./ttrackerd.exe -n "ttrackerd $RELEASE_VERSION"
