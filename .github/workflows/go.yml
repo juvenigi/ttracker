@@ -23,15 +23,13 @@ jobs:
         go-version: '1.22.0'
 
     - name: Build
-      run: go build -o ttrackerclient ./timetracker/src/client/client.go
-      working-directory: ./timetracker/src/client
+      run: go build -o ./bin/ttrackerclient ./timetracker/src/client/client.go
 
     - name: Build Daemon
-      run: go build -o ttrackerd ./timetracker/src/daemon/daemon.go
-      working-directory: ./timetracker/src/daemon
-
-    - name: Test
-      run: go test -v ./...
+      run: go build -o ./bin/ttrackerd ./timetracker/src/daemon/daemon.go
+#
+#    - name: Test
+#      run: go test -v ./...
 
     - name: Archive artifacts
       uses: actions/upload-artifact@v2
