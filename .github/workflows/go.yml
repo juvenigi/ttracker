@@ -30,16 +30,6 @@ jobs:
 
     - name: Build Daemon
       run: GOOS=windows GOARCH=amd64 go build -o ttrackerd.exe ./timetracker/src/daemon/daemon.go
-#
-#    - name: Test
-#      run: go test -v ./...
-
-    - name: Set version envvar
-      run: echo "version=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
-
-    - name: Display version
-      run: echo "Version is $version"
-
 
     - name: Archive artifacts
       uses: actions/upload-artifact@v2
@@ -58,7 +48,7 @@ jobs:
     steps:    
     - uses: actions/checkout@v3
     - name: Checkout and set RELEASE_VERSION envvar
-      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+      run: echo "RELEASE_VERSION=v0.2.0" >> $GITHUB_ENV
 
     - name: Download artifacts
       uses: actions/download-artifact@v2
