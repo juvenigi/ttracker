@@ -26,10 +26,10 @@ jobs:
       run: go get -v ./...
 
     - name: Build
-      run: GOOS=windows GOARCH=amd64 go build -o ./bin/ttrackerclient.exe ./timetracker/src/client/client.go
+      run: GOOS=windows GOARCH=amd64 go build -o ttrackerclient.exe ./timetracker/src/client/client.go
 
     - name: Build Daemon
-      run: GOOS=windows GOARCH=amd64 go build -o ./bin/ttrackerd.exe ./timetracker/src/daemon/daemon.go
+      run: GOOS=windows GOARCH=amd64 go build -o ttrackerd.exe ./timetracker/src/daemon/daemon.go
 #
 #    - name: Test
 #      run: go test -v ./...
@@ -46,8 +46,8 @@ jobs:
       with:
         name: binaries
         path: |
-          ./bin/ttrackerclient.exe
-          ./bin/ttrackerd.exe
+          ./ttrackerclient.exe
+          ./ttrackerd.exe
 
   release:
     needs: build
@@ -63,13 +63,12 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: binaries
-        path: ./bin
     
     - uses: actions/checkout@v2
     - name: Set RELEASE_VERSION envvar
-      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
         
     - name: Create Release
       run: |
-        gh release create "$RELEASE_VERSION" ./bin/ttrackerclient.exe -t "Release $RELEASE_VERSION" -n "ttrackerclient $RELEASE_VERSION"
-        gh release upload "$RELEASE_VERSION" ./bin/ttrackerd.exe -n "ttrackerd $RELEASE_VERSION"
+        gh release create "$RELEASE_VERSION" ttrackerclient.exe -t "Release $RELEASE_VERSION" -n "ttrackerclient $RELEASE_VERSION"
+        gh release upload "$RELEASE_VERSION" ttrackerd.exe -n "ttrackerd $RELEASE_VERSION"
