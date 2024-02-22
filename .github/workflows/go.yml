@@ -34,6 +34,14 @@ jobs:
 #    - name: Test
 #      run: go test -v ./...
 
+
+    - name: Set version envvar
+      run: echo "version=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+
+    - name: Display version
+      run: echo "Version is $version"
+
+
     - name: Archive artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -59,6 +67,9 @@ jobs:
       with:
         name: binaries
         path: ./bin
+    
+    - name: Fetch tags
+      run: git fetch --tags
 
     - name: Create Release
       run: |
