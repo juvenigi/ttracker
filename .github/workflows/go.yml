@@ -65,23 +65,11 @@ jobs:
         name: binaries
         path: ./bin
     
-    # - name: Fetch tags
-    #   run: git fetch --tags
-
-    - name: Create Tag from run number
-      run: git tag -a v${{ github.run_number }} -m "Release version v${{ github.run_number }}"
-
-    - name: Push Tag
-      run: git push origin v${{ github.run_number }}
-
+    - uses: actions/checkout@v2
+    - name: Set RELEASE_VERSION envvar
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        
     - name: Create Release
       run: |
-        version=v${{ github.run_number }}
-        gh release create "$version" ./bin/ttrackerclient.exe -t "Release $version" -n "ttrackerclient $version"
-        gh release upload "$version" ./bin/ttrackerd.exe -n "ttrackerd $version"
-    
-
-    - name: Create Release
-      run: |
-        gh release create "$version" ./bin/ttrackerclient.exe -t "Release $version" -n "ttrackerclient $version"
-        gh release upload "$version" ./bin/ttrackerd.exe -n "ttrackerd $version"
+        gh release create "$RELEASE_VERSION" ./bin/ttrackerclient.exe -t "Release $RELEASE_VERSION" -n "ttrackerclient $RELEASE_VERSION"
+        gh release upload "$RELEASE_VERSION" ./bin/ttrackerd.exe -n "ttrackerd $RELEASE_VERSION"
