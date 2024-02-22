@@ -34,7 +34,6 @@ jobs:
 #    - name: Test
 #      run: go test -v ./...
 
-
     - name: Set version envvar
       run: echo "version=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
@@ -57,22 +56,16 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.20'
-
     - name: Download artifacts
       uses: actions/download-artifact@v2
       with:
         name: binaries
         path: ./bin
     
-    - name: Fetch tags
-      run: git fetch --tags
+    # - name: Fetch tags
+    #   run: git fetch --tags
 
     - name: Create Release
       run: |
-        version=$(git describe --tags --abbrev=0)
         gh release create "$version" ./bin/ttrackerclient.exe -t "Release $version" -n "ttrackerclient $version"
         gh release upload "$version" ./bin/ttrackerd.exe -n "ttrackerd $version"
