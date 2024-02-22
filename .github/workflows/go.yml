@@ -68,6 +68,19 @@ jobs:
     # - name: Fetch tags
     #   run: git fetch --tags
 
+    - name: Create Tag from run number
+      run: git tag -a v${{ github.run_number }} -m "Release version v${{ github.run_number }}"
+
+    - name: Push Tag
+      run: git push origin v${{ github.run_number }}
+
+    - name: Create Release
+      run: |
+        version=v${{ github.run_number }}
+        gh release create "$version" ./bin/ttrackerclient.exe -t "Release $version" -n "ttrackerclient $version"
+        gh release upload "$version" ./bin/ttrackerd.exe -n "ttrackerd $version"
+    
+
     - name: Create Release
       run: |
         gh release create "$version" ./bin/ttrackerclient.exe -t "Release $version" -n "ttrackerclient $version"
