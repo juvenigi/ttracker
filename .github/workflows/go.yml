@@ -63,6 +63,9 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: binaries
+
+    - name: Debug why binary artifacts are not found
+      run: ls -l
     
     - uses: actions/checkout@v2
     - name: Set RELEASE_VERSION envvar
@@ -70,5 +73,5 @@ jobs:
         
     - name: Create Release
       run: |
-        gh release create "$RELEASE_VERSION" ttrackerclient.exe -t "Release $RELEASE_VERSION" -n "ttrackerclient $RELEASE_VERSION"
-        gh release upload "$RELEASE_VERSION" ttrackerd.exe -n "ttrackerd $RELEASE_VERSION"
+        gh release create "$RELEASE_VERSION" ./ttrackerclient.exe -t "Release $RELEASE_VERSION" -n "ttrackerclient $RELEASE_VERSION"
+        gh release upload "$RELEASE_VERSION" ./ttrackerd.exe -n "ttrackerd $RELEASE_VERSION"
